@@ -28,8 +28,7 @@ images = []
 var imgNum = 0;
 for (var i=0;i<unique.length;i++) {
  	var img = new Image();
-	img.src = 'C:/Users/Lolkek/Desktop/assets/PNG/Default_size/towerDefense_tile'+unique[i]+'.png';
-
+	img.src = 'assets/PNG/Default_size/towerDefense_tile'+unique[i]+'.png';
 	img.onload = function() {
 		imgNum++;
 		images.push({name: this.src, image: this});
@@ -50,12 +49,8 @@ function drawAll() {
 function drawMap() {
 	for (var x=0;x<11;x++) {
  		for (var y=0;y<18;y++) {
- 			for (var re=0;re<images.length;re++) {
- 				if (images[re].name=='file:///C:/Users/Lolkek/Desktop/assets/PNG/Default_size/towerDefense_tile'+map[x][y]+'.png') {
- 					ctx.drawImage(images[re].image,64*y,64*x,64,64);
- 				}
- 			}
-						
+ 			map_image = getImage('towerDefense_tile'+map[x][y]+'.png');
+ 			ctx.drawImage(map_image,64*y,64*x,64,64);			
 		}
 	}
 }
@@ -86,13 +81,13 @@ function doMouseDown(event) {
 
 function drawTower() {
 
-	tower1 = getImage('file:///C:/Users/Lolkek/Desktop/assets/PNG/Default_size/towerDefense_tile180.png');
+	tower1 = getImage('towerDefense_tile180.png');
 	
 	for (var f = 0; f < towers.length; f++) {
 		ctx.drawImage(tower1,64*towers[f].x, 64*towers[f].y, 64, 64);
 	}
 	
-	tower2 = getImage('file:///C:/Users/Lolkek/Desktop/assets/PNG/Default_size/towerDefense_tile249.png');
+	tower2 = getImage('towerDefense_tile249.png');
 
 	for (var g = 0; g < towers.length; g++) {
 				ctx.drawImage(tower2,64*towers[g].x, 64*towers[g].y-25, 64, 64);	
@@ -100,9 +95,11 @@ function drawTower() {
 }
 
 function getImage(name) {
-	for (var i = 0; i < images.length; i++)
-		if(images[i].name==name)
+	for (var i = 0; i < images.length; i++) {
+		names = images[i].name.split('/')
+		if(names[names.length - 1]==name)
 			return images[i].image
+	}
 }
 
 var enemyX=95;
@@ -114,7 +111,7 @@ var directionY = 0;
 var enemyMany = 0;
 
 function drawEnemy() {
-	enemy1 = getImage('file:///C:/Users/Lolkek/Desktop/assets/PNG/Default_size/towerDefense_tile245.png');
+	enemy1 = getImage('towerDefense_tile245.png');
 	ctx.drawImage(enemy1,enemyX,enemyY,64,64);
 	
 	if (enemyY > 365) {
@@ -160,9 +157,8 @@ function drawEnemy() {
 	enemyX += directionX;
 	enemyY += directionY;
 
-	console.log(enemyY,enemyX)
 	if (enemyY <= 480)  {
-		enemy1 = getImage('file:///C:/Users/Lolkek/Desktop/assets/PNG/Default_size/towerDefense_tile245.png');
+		enemy1 = getImage('towerDefense_tile245.png');
 		ctx.drawImage(enemy1,enemyX,enemyY+100,64,64);
 	}
 
