@@ -5,6 +5,8 @@ var y;
 
 canv.addEventListener("mousedown", doMouseDown, false);
 
+var enemy = []
+
 var map = 
         [
             ["024","024","024","024","024","003","047","047","047","047","047","047","004","024","024","024","024","024"],
@@ -24,7 +26,8 @@ var unique = ["024","003","047","004","025","023","299","001","002","048","027",
 
 var towers = []
 
-images = []
+var images = []
+
 var imgNum = 0;
 for (var i=0;i<unique.length;i++) {
  	var img = new Image();
@@ -102,8 +105,7 @@ function getImage(name) {
 	}
 }
 
-var enemyX=95;
-var enemyY=580;
+enemy.push({x: 95, y: 580})
 
 var directionX = 1;
 var directionY = 0;
@@ -111,56 +113,49 @@ var directionY = 0;
 var enemyMany = 0;
 
 function drawEnemy() {
+	enemyMany++
+	if (enemyMany == 150){
+		enemy.push({x: 95, y: 580})
+		enemyMany = 0
+	}
 	enemy1 = getImage('towerDefense_tile245.png');
-	ctx.drawImage(enemy1,enemyX,enemyY,64,64);
-	
-	if (enemyY > 365) {
-		directionX = 0;
-		directionY = -1;
+	for (var i = 0; i < enemy.length; i++) {
+		ctx.drawImage(enemy1,enemy[i].x,enemy[i].y,64,64);
+
+		if (enemy[i].y > 365) {
+			directionX = 0;
+			directionY = -1;
+		}
+
+		if (enemy[i].y <= 365) {
+			directionX = 1;
+			directionY = 0;	
+		}
+
+		if (enemy[i].x > 350) {
+			directionX = 0;
+			directionY = -1;	
+		}
+
+		if (enemy[i].y < 35) {
+			directionX = 1;
+			directionY = 0;	
+		}
+
+		if (enemy[i].x > 725) {
+			directionX = 0;
+			directionY = 1;	
+		}
+
+		if (enemy[i].y> 470 && enemy[i].x > 710) {
+			directionX = 1;
+			directionY = 0;	
+		}
+		enemy[i].x += directionX;
+		enemy[i].y += directionY;
+
+		
 	}
 
-	if (enemyY <= 365) {
-		directionX = 1;
-		directionY = 0;	
-	}
+	}	
 
-	if (enemyX > 350) {
-		directionX = 0;
-		directionY = -1;	
-	}
-
-	if (enemyY < 35) {
-		directionX = 1;
-		directionY = 0;	
-	}
-
-	if (enemyX > 725) {
-		directionX = 0;
-		directionY = 1;	
-	}
-
-	if (enemyY > 470 && enemyX > 710) {
-		directionX = 1;
-		directionY = 0;	
-	}
-	/*if (enemyX==219)
-		enemyY++
-	else
-		enemyX++
-	if (enemyY==258)
-		enemyX+=0.13
-	if(enemyX>550)
-		return
-	if(enemyX>550)
-		enemyY++*/
-
-	enemyX += directionX;
-	enemyY += directionY;
-
-	if (enemyY <= 480)  {
-		enemy1 = getImage('towerDefense_tile245.png');
-		ctx.drawImage(enemy1,enemyX,enemyY+100,64,64);
-	}
-
-
-}
