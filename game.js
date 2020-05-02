@@ -105,56 +105,73 @@ function getImage(name) {
 	}
 }
 
-enemy.push({x: 95, y: 580})
+enemy.push({x: 125, y: 580})
 
 var directionX = 1;
 var directionY = 0;
 
 var enemyMany = 0;
 
+function enemyRotate(enemy, x, y, scale, rotation){
+    ctx.setTransform(scale, 0, 0, scale, x, y); 
+    ctx.rotate(rotation);
+    ctx.drawImage(enemy, -enemy.width / 2, -enemy.height / 2);
+} 
+
 function drawEnemy() {
+	var rotate = 0;
 	enemyMany++
 	if (enemyMany == 150){
-		enemy.push({x: 95, y: 580})
+		enemy.push({x: 125, y: 580})
 		enemyMany = 0
 	}
 	enemy1 = getImage('towerDefense_tile245.png');
-	for (var i = 0; i < enemy.length; i++) {
-		ctx.drawImage(enemy1,enemy[i].x,enemy[i].y,64,64);
 
-		if (enemy[i].y > 365) {
+	for (var i = 0; i < enemy.length; i++) {
+		if (enemy[i].y > 300) {
 			directionX = 0;
 			directionY = -1;
+			
 		}
 
-		if (enemy[i].y <= 365) {
+		if (enemy[i].y <= 385) {
 			directionX = 1;
 			directionY = 0;	
+			rotate = Math.PI/2;
 		}
 
-		if (enemy[i].x > 350) {
+		if (enemy[i].x > 380) {
 			directionX = 0;
 			directionY = -1;	
+			rotate = 0;
+		
 		}
 
-		if (enemy[i].y < 35) {
+		if (enemy[i].y < 65) {
 			directionX = 1;
 			directionY = 0;	
+			rotate = Math.PI/2;
 		}
 
-		if (enemy[i].x > 725) {
+		if (enemy[i].x > 773) {
 			directionX = 0;
 			directionY = 1;	
+			rotate = Math.PI;
 		}
 
-		if (enemy[i].y> 470 && enemy[i].x > 710) {
+		if (enemy[i].y> 510 && enemy[i].x > 710) {
 			directionX = 1;
 			directionY = 0;	
+			rotate = Math.PI/2;
 		}
 		enemy[i].x += directionX;
 		enemy[i].y += directionY;
 
-		
+
+		enemyRotate(enemy1, enemy[i].x, enemy[i].y, 1, rotate);
+		rotate = 0;
+		//ctx.drawImage(enemy1,enemy[i].x,enemy[i].y,64,64);
+		ctx.setTransform(1,0,0,1,0,0);
 	}
 
 	}	
